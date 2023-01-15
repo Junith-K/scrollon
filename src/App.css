@@ -1,0 +1,29 @@
+body{
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: black;
+  color: white;
+}
+
+.app_main{
+  display: flex;
+  margin-top: 2em;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.floating_button{
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  text-align: center;
+  cursor:pointer;
+  font-size: xx-large;
+  border-radius: 50%;
+}

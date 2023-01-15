@@ -1,0 +1,28 @@
+.viewed{
+    margin-left: 2em;
+    background-color: #222222;
+    padding: 0.5em 2em;
+    height: min-content;
+}
+
+.viewed_title{
+    font-size: large;
+    padding: 0 6em 1em 6em;
+}
+
+.viewed_body{
+    display: flex;
+    flex-direction: column;
+}
+
+.viewed_titles{
+    cursor: pointer;
+    width: min-content;
+    /* padding-bottom: 0.2em; */
+    color: #9a9a9a;
+    border-bottom: #222222 solid 1px;
+}
+
+.viewed_titles:hover{
+    border-color: #9a9a9a;
+}
