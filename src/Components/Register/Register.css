@@ -1,0 +1,70 @@
+.regis_main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.regi_title{
+    font-size: x-large;
+    margin-bottom: 1em;
+}
+
+.nav_regis{
+  border-radius: 20px;
+  padding: 0.5em 1em;
+  background: linear-gradient(to right, #6DC7FF, #6DC7FF,#E6ABFF, #E6ABFF);
+  cursor: pointer;
+  margin-right: 1em;
+  margin-top: 1em;
+  color: white;
+  background-size: 600% 100%;
+  animation: gradient 10s linear infinite;
+  animation-direction:alternate;
+}
+
+@keyframes gradient {
+    0% {background-position: 0%}
+    100% {background-position: 100%}
+}
+
+.register{
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0c0c0c;
+    border-radius: 20px;
+}
+
+.box {
+  width: 350px;
+  height: 30px;
+  background-color: #222222;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0.5em;
+  margin: 0.5em 0;
+}
+
+.box > span {
+  font-size: 20px;
+  color: #808080;
+}
+
+.box > input {
+  flex: 1;
+  height: 20px;
+  border: none;
+  outline: none;
+  background-color: #222222;
+  font-size: 1em;
+  padding-left: 10px;
+  color: #d0d0d0;
+}
+
+.box > input::placeholder {
+  color: #808080;
+}

@@ -15,6 +15,7 @@
   padding-left: 5px;
   font-size: xx-large;
   font-weight: bold;
+  color: white;
 }
 
 .nav_main {
@@ -80,3 +81,49 @@
 .profile_name {
   font-size: smaller;
 }
+
+.nav_foot{
+  display: flex;
+  flex-direction: row;
+  color: white;
+}
+
+.nav_regis1{
+  border-radius: 20px;
+  padding: 0.5em 1em;
+  background-image: linear-gradient(to bottom, #6DC7FF, #E6ABFF);
+  cursor: pointer;
+  margin-right: 1em;
+  color: white;
+}
+
+.nav_sign{
+  border-radius: 20px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border: #6DC7FF solid 2px;
+  margin-right: 1em;
+  color: white;
+}
+
+.nav_ghost{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #E6ABFF solid 2px;
+  border-radius: 20px;
+  padding: 0 1em;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.nav_ghost > img {
+  width: 30px;
+  height: 30px;
+  padding-right: 10px;
+}
+
+/* #6DC7FF
+#1A6DFF
+#E6ABFF
+#C822FF */
