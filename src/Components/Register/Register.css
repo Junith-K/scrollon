@@ -1,41 +1,45 @@
-.regis_main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+.regis_main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
-.regi_title{
-    font-size: x-large;
-    margin-bottom: 1em;
+.regi_title {
+  font-size: x-large;
+  margin-bottom: 1em;
 }
 
-.nav_regis{
+.nav_regis {
   border-radius: 20px;
   padding: 0.5em 1em;
-  background: linear-gradient(to right, #6DC7FF, #6DC7FF,#E6ABFF, #E6ABFF);
+  background: linear-gradient(to right, #6dc7ff, #6dc7ff, #e6abff, #e6abff);
   cursor: pointer;
   margin-right: 1em;
   margin-top: 1em;
   color: white;
   background-size: 600% 100%;
-  animation: gradient 10s linear infinite;
-  animation-direction:alternate;
+  animation: gradient 8s linear infinite;
+  animation-direction: alternate;
 }
 
 @keyframes gradient {
-    0% {background-position: 0%}
-    100% {background-position: 100%}
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 100%;
+  }
 }
 
-.register{
-    padding: 2em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #0c0c0c;
-    border-radius: 20px;
+.register {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #0c0c0c;
+  border-radius: 20px;
 }
 
 .box {
@@ -52,6 +56,7 @@
 .box > span {
   font-size: 20px;
   color: #808080;
+  padding: 0 0.5em;
 }
 
 .box > input {
@@ -67,4 +72,103 @@
 
 .box > input::placeholder {
   color: #808080;
+}
+
+.profile_icon {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em 0;
+}
+
+.icon_choose {
+  background-color: #222222;
+  padding: 0.5em 1em;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.profilee {
+  position: relative;
+  padding: 0.5em;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background-color: #222222;
+  margin-right: 1em;
+}
+
+.profilee_body {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5em;
+}
+
+.profilee > div > img {
+  width: 30px;
+  height: 30px;
+  padding-right: 10px;
+  padding-left: 5px;
+}
+
+.profilee_name {
+  font-size: smaller;
+}
+
+.modal {
+  width: 600px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #0c0c0c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon_title{
+  font-size: x-large;
+  margin-top: 0.5em;
+}
+
+.modal_choose{
+  padding: 2em;
+}
+
+.modal_choose > img{
+  margin: 0.5em;
+  cursor: pointer;
+}
+
+.selected_icon{
+  background-image: linear-gradient(to right,#6DC7FF, #E6ABFF);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal_buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_button{
+  background-color: #222222;
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 20px;
+  cursor: pointer;
 }
