@@ -4,6 +4,9 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import {icons} from "../../Icons/Icons.js";
 import ReactModal from 'react-modal';
+import moment from 'moment/moment';
+import validator from 'validator';
+import getToastError from '../Toast/Toast';
 
 
 export default function Register() {
@@ -13,23 +16,32 @@ const navigate = useNavigate();
   const [pass, setPass] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [key,setKey] = useState("");
-  const [cookies, setCookie] = useCookies(["uid"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
 
   const sendUser = async() => {
-    const requestOptions = {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"email": email.toString(),"uname": uname.toString(), "password":pass.toString(), icon: key!=""?key:"profile", "registered_date": Date.toLocaleString()})
-    };
-    fetch("http://localhost:4008/register", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        setCookie('uid', data.insertedId, { path: '/' })
-        setCookie('email', email, { path: '/' })
-        setCookie("uname", uname, { path: "/" });
-        setCookie("icon", key != "" ? key : "profile", { path: "/" });
-        navigate("/");
-      });
+    if(email.length==0 || pass.length==0 || uname.length==0){
+      getToastError("Enter all Details!")
+    }
+    else if(!validator.isEmail(email)){
+      getToastError("Invalid Email!")
+    }
+    else {
+      const requestOptions = {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"email": email.toString(),"uname": uname.toString(), "password":pass.toString(), icon: key!=""?key:"profile", "registered_date": moment()})
+      };
+      fetch("http://localhost:3001/register", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          removeCookie("ghost", {path: "/"})
+          setCookie('uid', data.insertedId, { path: '/' })
+          setCookie('email', email, { path: '/' })
+          setCookie("uname", uname, { path: "/" });
+          setCookie("icon", key != "" ? key : "profile", { path: "/" });
+          navigate("/");
+        });
+    }
   }
 
   function handleCloseModal(){
@@ -61,11 +73,11 @@ const navigate = useNavigate();
         </div>
         <div class="box">
           <span class="material-symbols-outlined">person</span>
-          <input onChange={(e)=>{setUname(e.target.value)}} type="text" name="" placeholder="Username" />
+          <input onChange={(e)=>{e.target.value.length<=12 && setUname(e.target.value)}} value={uname} type="text" name="" placeholder="Username" />
         </div>
         <div class="box">
           <span class="material-symbols-outlined">key</span>
-          <input onChange={(e)=>{setPass(e.target.value)}} type="text" name="" placeholder="Password" />
+          <input onChange={(e)=>{e.target.value.length<=12 && setPass(e.target.value)}} value={pass} type="text" name="" placeholder="Password" />
         </div>
         <div className='profile_icon'>
           <div className="profilee">

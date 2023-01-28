@@ -7,13 +7,17 @@ import "./Main.css"
 import { useState } from 'react'
 import { useCookies } from "react-cookie";
 import ReactModal from "react-modal";
+import { useNavigate } from 'react-router-dom'
+import moment from 'moment/moment'
+import getToastError from '../Toast/Toast'
 
 export default function Main() {
   const [showModal, setShowModal] = useState(false);
   const [tag, setTag] = useState("")
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("");
-  const [cookies, setCookie] = useCookies(["uid, uname"]);
+  const [cookies, setCookie] = useCookies(["uid", "uname", "ghost"]);
+  const navigate = useNavigate()
 
   function handleCloseModal() {
     setShowModal(false);
@@ -24,11 +28,16 @@ export default function Main() {
   }
 
   function handleOpenModal() {
-    setShowModal(true);
+    if(cookies.ghost){
+      getToastError("Ghosts cant post anything")
+    }
+    else{
+      setShowModal(true);
+    }
   }
 
   const createPost = () => {
-    let currdate = new Date()
+    let currdate = moment()
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -38,7 +47,9 @@ export default function Main() {
       .then((response) => response.json())
       .then((data) => {
         handleSubmitModal()
+        navigate("/")
       });
+    
   }
 
   return (

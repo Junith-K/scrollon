@@ -2,11 +2,16 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import "./Post.css"
+import getTime from '../../../Time/Time';
+import moment from 'moment/moment';
+import { useCookies } from "react-cookie";
+import getToastError from '../../Toast/Toast';
 
 export default function Post() {
 
   const [posts, setPost] = useState([])
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["ghost"]);
 
 
   useEffect(()=>{
@@ -26,7 +31,11 @@ export default function Post() {
   }
 
   const goToPost = (id) => {
-    navigate(`/post/${id}`)
+    if(cookies.ghost){
+      getToastError("You have to login to view the entire post!")
+    }else{
+      navigate(`/post/${id}`)
+    }
   }
 
   return (
@@ -46,7 +55,7 @@ export default function Post() {
                 </div>
                 <div className="post_foot">
                   <div className="foot_name">{post?.username}</div>
-                  <div className="foot_time">Posted 1hr ago</div>
+                  <div className="foot_time">{`${getTime(moment(),moment(post?.posted_time))}`+` ago`}</div>
                 </div>
               </div>
             );

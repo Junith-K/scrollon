@@ -1,0 +1,141 @@
+.posts{
+    padding-top: 100px;
+    margin: 0 3em;
+    display: flex;
+    flex-direction: row;
+    height: 90%;
+}
+
+.posts_content{
+    width: 50%;
+    background-color: #222222;
+    margin-top: 1em;
+    /* margin-bottom: 2em; */
+    display: flex;
+    flex-direction: column;
+    padding: 1em 1.5em;
+}
+
+.posts_title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #808080 solid 2px;
+    padding-bottom: 1em;
+}
+
+.posts_tit{
+    display: flex;
+    flex-direction: column;
+}
+
+.tit_main{
+    font-size: larger;
+}
+
+.tit_name{
+    color: #808080;
+    font-size: small;
+}
+
+.posts_posted{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.posted_time{
+    color: #808080;
+    font-size: small;
+}
+
+.posts_body{
+    padding-top: 1em;
+    color: #b5b5b5;
+    font-size:medium;
+}
+
+.posts_comments{
+    width: 50%;
+    background-color: #222222;
+    margin-top: 1em;
+    /* margin-bottom: 2em; */
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    border-left: #808080 solid 1px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.posted_tag > span {
+    color: #808080;
+}
+
+.posted_tag{
+    text-transform:capitalize ;
+    color: #e6abff;
+}
+
+.comment_title{
+    text-align: center;
+    font-size: larger;
+}
+
+.com_body{
+    display: flex;
+    flex-direction: row;
+    background-color: #383838;
+    margin: 0.5em 0;
+}
+
+.com_body > img {
+    width: 50px;
+    height: 50px;
+    padding-left: 0.5em;
+    padding-top: 0.5em;
+}
+
+.com_main{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+.com_top{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.top_time{
+    font-size: small;
+    color: #808080;
+}
+
+.com_comment{
+    color: #b5b5b5;
+}
+
+.comment_p{
+    margin-top: 2em;
+    margin-right: 1em;
+    margin-bottom: 0;
+}
+
+.body_input{
+    background-color: #383838;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.com_but{
+    align-self: center;
+    background-color: #383838;
+    text-align: end;
+    padding: 0.5em;
+    cursor: pointer;
+}
