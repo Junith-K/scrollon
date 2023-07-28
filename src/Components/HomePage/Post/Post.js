@@ -26,8 +26,10 @@ export default function Post() {
     fetch("http://localhost:3001/get-posts", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setPost(data)
       });
+
   }
 
   const goToPost = (id) => {
@@ -46,16 +48,16 @@ export default function Post() {
               <div onClick={()=>goToPost(post._id)} className="post_main">
                 <div className="post_body">
                   <span class="material-symbols-outlined">image</span>
-                  <div>
+                  <div style={{width: "95%"}}>
                     <div className="post_title">
                       {post?.title}
                     </div>
-                    <div className="post_content">{post?.body}</div>
+                    <div className="post_content">{`Posted by ${post?.username} ${getTime(moment(),moment(post?.posted_time))} ago`}</div>
                   </div>
                 </div>
                 <div className="post_foot">
-                  <div className="foot_name">{post?.username}</div>
-                  <div className="foot_time">{`${getTime(moment(),moment(post?.posted_time))}`+` ago`}</div>
+                  <span class="material-symbols-outlined">comment</span>
+                  <div className="foot_body">{post?.comment?post?.comment.length:0}</div>
                 </div>
               </div>
             );

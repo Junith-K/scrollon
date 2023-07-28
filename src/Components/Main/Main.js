@@ -41,7 +41,7 @@ export default function Main() {
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname})
+      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0})
     };
     fetch("http://localhost:3001/create-post", requestOptions)
       .then((response) => response.json())

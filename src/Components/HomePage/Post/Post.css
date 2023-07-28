@@ -13,6 +13,8 @@
     padding: 0.25em 0.5em;
     cursor: pointer;
     border: #222222 solid 1px;
+    width: 100%;
+    height: max-content;
 }
 
 .post_main:hover{
@@ -22,30 +24,51 @@
 .post_title{
     font-size: 0.9em;
     color: #ededed;
+    /* display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden; */
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
 }
 
 .post_content{
-    font-size: 0.8em;
-    color: #b5b5b5;
+    font-size: smaller;
+    color: #808080;
+    /* display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden; */
 }
 
 .post_foot{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-evenly;
+    width: 5%;
+    height: 100%;
 }
 
 .post_body{
     display: flex;
     align-items: center;
+    width: 95%;
 }
 
 .post_body > span{
     font-size: xx-large;
     padding-right: 0.25em;
+    width: 5%;
+    text-align: center;
 }
 
-.foot_name, .foot_time{
-    font-size: smaller;
+.post_foot > span{
+    color: #808080;
+    font-size: 1.5em;
+}
+
+.foot_body{
     color: #808080;
 }

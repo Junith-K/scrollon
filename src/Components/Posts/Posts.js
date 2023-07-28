@@ -13,6 +13,9 @@ export default function Posts() {
   const [body, setBody] = useState("")
   const [cookies, setCookie] = useCookies(["uid","uname","icon"]);
   const [comments, setComment] = useState([])
+  const [like, setLike] = useState(0)
+  const [isLiked,setIsLiked] = useState(false);
+  const [isDisLiked,setIsDisLiked] = useState(false);
 
 
   useEffect(() => {
@@ -25,9 +28,20 @@ export default function Posts() {
       .then((data) => {
         setPostData(data);
         setComment(data.comment)
-        console.log(data);
+        setIsLiked(data.likedBy.some((liked) => liked === cookies.uid))
+        setIsDisLiked(data.dislikedBy.some((disliked) => disliked === cookies.uid))
+        setLike(data.likes)
+        // console.log(data.likedBy.some((liked) => liked === cookies.uid));
       });
   }, []);
+
+  useEffect(()=>{
+    console.log("isLiked : "+isLiked)
+  },[isLiked])
+
+  useEffect(()=>{
+    console.log("isDisLiked : "+isDisLiked)
+  },[isDisLiked])
 
   const postComment = () => {
     var today = moment()
@@ -44,20 +58,105 @@ export default function Posts() {
       });
   }
 
+  const likePost = () => {
+    if(isLiked){
+      setLike(like-1);
+    }else{
+      if(isDisLiked){
+        setLike(like+2);
+      }else{
+        setLike(like+1);
+      }
+    }
+
+    const requestOptions = {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({"uid": cookies.uid, "isLiked": isLiked, "isDisLiked": isDisLiked})
+    };
+
+    fetch(`http://localhost:3001/post/like/${params.id}`, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      if(isDisLiked){
+        setIsDisLiked(false)
+      }
+      setIsLiked(!isLiked)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+
+  }
+
+  const dislikePost = () => {
+    if(isDisLiked){
+      setLike(like+1);
+    }else{
+      console.log(isLiked)
+      if(isLiked){
+        setLike(like-2);
+      }
+      else{
+        setLike(like-1);
+      }
+    }
+
+    const requestOptions = {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({"uid": cookies.uid, "isDisLiked": isDisLiked, "isLiked": isLiked})
+    };
+
+    fetch(`http://localhost:3001/post/dislike/${params.id}`, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      if(isLiked){
+        setIsLiked(false)
+      }
+      setIsDisLiked(!isDisLiked)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }
+
   return (
     <div className="posts">
       <div className="posts_content">
         <div className="posts_title">
-          <div className="posts_tit">
-            <div className="tit_main">{postData?.title}</div>
-            <div className="tit_name">Posted By {postData?.username}</div>
+          <div className="likes">
+            <span onClick={likePost} class={`${isLiked?"material-icons selected-like":"material-symbols-outlined"} like`}>arrow_circle_up</span>
+            <div>{like}</div>
+            <span onClick={dislikePost} class={`${isDisLiked?"material-icons selected-dislike":"material-symbols-outlined"} dislike`}>arrow_circle_down</span>
           </div>
-          <div className="posts_posted">
-            <div className="posted_tag">
-              <span>Tag : </span>
-              {postData?.tag}
+          <div style={{width: "100%"}}>
+            <div className="tit_bottom">
+              <div className="tit_top">
+                <img key={postData?.icon} src={Icons[postData?.icon?postData?.icon:"profile"]} alt="bloggy"></img>
+                <div>
+                <div className="tit_name">{`Posted by ${postData?.username}`}</div>
+                <div className="tit_name">{`• ${getTime(moment(),moment(postData?.posted_time))} ago`}</div>
+                </div>
+              </div>
+              <div className="posted_tag">
+                {postData?.tag?<><span>Tag : </span>
+                {postData?.tag}</>:<></>}
+              </div>
             </div>
-            <div className="posted_time">{`${getTime(moment(),moment(postData?.posted_time))}`+` ago`}</div>
+            <div className="tit_main">{postData?.title}</div>
           </div>
         </div>
         <div className="posts_body">{postData?.body}</div>
@@ -66,7 +165,7 @@ export default function Posts() {
         </div>
         <div className="com_but" onClick={postComment}>Comment</div>
       </div>
-      <div className="posts_comments">
+      <div className="posts_comments scroll-container">
         <div className="comment_title">Comments</div>
         <div>
           {
@@ -77,7 +176,7 @@ export default function Posts() {
                   <div className="com_main">
                     <div className="com_top">
                       <div className="top_username">{comment.username}</div>
-                      <div className="top_time">{`${getTime(moment(),moment(comment?.commented_time))}`+` ago`}</div>
+                      <div className="top_time">{`• ${getTime(moment(),moment(comment?.commented_time))}`+` ago`}</div>
                     </div>
                     <div className="com_comment">{comment.comment}</div>
                   </div>
