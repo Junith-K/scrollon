@@ -39,6 +39,7 @@ const navigate = useNavigate();
           setCookie('email', email, { path: '/' })
           setCookie("uname", uname, { path: "/" });
           setCookie("icon", key != "" ? key : "profile", { path: "/" });
+          setCookie('sortBy', "latest", { path: '/' })
           navigate("/");
         });
     }

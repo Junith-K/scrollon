@@ -11,7 +11,7 @@ export default function Posts() {
   const params = useParams();
   const [postData, setPostData] = useState();
   const [body, setBody] = useState("")
-  const [cookies, setCookie] = useCookies(["uid","uname","icon"]);
+  const [cookies, setCookie] = useCookies(["uid","uname","icon","recent_posts"]);
   const [comments, setComment] = useState([])
   const [like, setLike] = useState(0)
   const [isLiked,setIsLiked] = useState(false);
@@ -23,15 +23,15 @@ export default function Posts() {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`http://localhost:3001/post/${params.id}`, requestOptions)
+    fetch(`http://localhost:3001/post/${params.id}?uid=${cookies.uid}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setPostData(data);
         setComment(data.comment)
-        setIsLiked(data.likedBy.some((liked) => liked === cookies.uid))
-        setIsDisLiked(data.dislikedBy.some((disliked) => disliked === cookies.uid))
+        setIsLiked(data.likedBy?.some((liked) => liked === cookies.uid))
+        setIsDisLiked(data.dislikedBy?.some((disliked) => disliked === cookies.uid))
         setLike(data.likes)
-        // console.log(data.likedBy.some((liked) => liked === cookies.uid));
+        setCookie("recent_posts", {"post_title": data.title, "post_id": data._id})
       });
   }, []);
 

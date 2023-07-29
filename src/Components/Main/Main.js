@@ -16,8 +16,9 @@ export default function Main() {
   const [tag, setTag] = useState("")
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("");
-  const [cookies, setCookie] = useCookies(["uid", "uname", "ghost"]);
+  const [cookies, setCookie] = useCookies(["uid", "uname", "ghost", "sortBy"]);
   const navigate = useNavigate()
+  const [sort, setSort] = useState(cookies.sortBy)
 
   function handleCloseModal() {
     setShowModal(false);
@@ -41,7 +42,7 @@ export default function Main() {
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0})
+      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0, "likedBy": [], "dislikedBy": [], "viewedBy": []})
     };
     fetch("http://localhost:3001/create-post", requestOptions)
       .then((response) => response.json())
@@ -55,9 +56,9 @@ export default function Main() {
   return (
     <>
       <div style={{ paddingTop: "100px", margin: "0em 3em" }}>
-        <Sort />
+        <Sort setSort={setSort} sort={sort}/>
         <div className="app_main">
-          <Post />
+          <Post sort={sort}/>
           <Viewed />
         </div>
       </div>

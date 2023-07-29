@@ -27,6 +27,7 @@ export default function Signin() {
           setCookie('email', email, { path: '/' })
           setCookie("uname", data.uname, { path: "/" });
           setCookie('icon', data.icon, { path: "/" })
+          setCookie('sortBy', "latest", { path: '/' })
           navigate("/");
           }
           else{

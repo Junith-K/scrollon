@@ -101,10 +101,12 @@
 
 .like:hover, .selected-like{
     color: #e6abff;
+    cursor: pointer;
 }
 
 .dislike:hover, .selected-dislike{
     color: #6dc7ff;
+    cursor: pointer;
 }
 
 .selected-likes{
