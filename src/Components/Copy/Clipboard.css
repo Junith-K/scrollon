@@ -1,0 +1,26 @@
+.button {
+    appearance: none;
+    cursor: pointer;
+    outline: 0;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    border: #808080 solid 1px;
+    align-items: center;
+    position: relative;
+    display: grid;
+    padding: 0.5em 1em;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+}
+
+.button:hover{
+    background-color: #808080;
+}
+
+.icon {
+    grid-column: 1;
+    grid-row: 1;
+}
+  

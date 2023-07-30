@@ -3,6 +3,7 @@ import "../Register/Register.css"
 import { useState } from 'react';
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import link from '../../constants'
 import getToastError from '../Toast/Toast';
 
 
@@ -18,7 +19,7 @@ export default function Signin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({"email": email.toString(), "password":pass.toString()})
       };
-      fetch("http://localhost:3001/sign-in", requestOptions)
+      fetch(`${link}/sign-in`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
           if(!data.error){
@@ -28,6 +29,7 @@ export default function Signin() {
           setCookie("uname", data.uname, { path: "/" });
           setCookie('icon', data.icon, { path: "/" })
           setCookie('sortBy', "latest", { path: '/' })
+          setCookie('recent_posts', [], { path: '/' })
           navigate("/");
           }
           else{

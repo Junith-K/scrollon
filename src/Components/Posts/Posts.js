@@ -5,6 +5,8 @@ import Icons from "../../Icons/Icons";
 import { useCookies } from "react-cookie";
 import getTime from "../../Time/Time";
 import moment from "moment";
+import link from '../../constants'
+import Clipboard from "../Copy/Copy";
 
 
 export default function Posts() {
@@ -16,14 +18,22 @@ export default function Posts() {
   const [like, setLike] = useState(0)
   const [isLiked,setIsLiked] = useState(false);
   const [isDisLiked,setIsDisLiked] = useState(false);
+  const [copied, setCopied] = useState(false)
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (copied) setCopied(false)
+    }, 1000)
+
+    return () => clearTimeout(timeout)
+  }, [copied])
 
   useEffect(() => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`http://localhost:3001/post/${params.id}?uid=${cookies.uid}`, requestOptions)
+    fetch(`${link}/post/${params.id}?uid=${cookies.uid}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setPostData(data);
@@ -31,17 +41,25 @@ export default function Posts() {
         setIsLiked(data.likedBy?.some((liked) => liked === cookies.uid))
         setIsDisLiked(data.dislikedBy?.some((disliked) => disliked === cookies.uid))
         setLike(data.likes)
-        setCookie("recent_posts", {"post_title": data.title, "post_id": data._id})
+        const foundIndex = cookies.recent_posts.findIndex(item => item.post_title === data.title && item.post_id === data._id);
+        let temp = [...cookies.recent_posts];
+        console.log(temp)
+        if (foundIndex !== -1) {
+          const foundObject = temp[foundIndex];
+          temp.splice(foundIndex, 1);
+          temp.unshift(foundObject);
+          setCookie("recent_posts", [...temp])
+        }
+        else if(cookies.recent_posts.length>=10){
+          temp.pop()
+          setCookie("recent_posts", [{"post_title": data.title, "post_id": data._id}, ...temp])
+        }
+        else{
+          setCookie("recent_posts", [{"post_title": data.title, "post_id": data._id},...cookies.recent_posts])
+        }
       });
   }, []);
 
-  useEffect(()=>{
-    console.log("isLiked : "+isLiked)
-  },[isLiked])
-
-  useEffect(()=>{
-    console.log("isDisLiked : "+isDisLiked)
-  },[isDisLiked])
 
   const postComment = () => {
     var today = moment()
@@ -50,10 +68,9 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"comment": body, "uid": cookies.uid, "username": cookies.uname, "icon": cookies.icon, "commented_time": today})
     };
-    fetch(`http://localhost:3001/comment/${postData._id}`, requestOptions)
+    fetch(`${link}/comment/${postData._id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setBody("")
       });
   }
@@ -75,7 +92,7 @@ export default function Posts() {
       body: JSON.stringify({"uid": cookies.uid, "isLiked": isLiked, "isDisLiked": isDisLiked})
     };
 
-    fetch(`http://localhost:3001/post/like/${params.id}`, requestOptions)
+    fetch(`${link}/post/like/${params.id}`, requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -83,7 +100,6 @@ export default function Posts() {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       if(isDisLiked){
         setIsDisLiked(false)
       }
@@ -99,7 +115,6 @@ export default function Posts() {
     if(isDisLiked){
       setLike(like+1);
     }else{
-      console.log(isLiked)
       if(isLiked){
         setLike(like-2);
       }
@@ -114,7 +129,7 @@ export default function Posts() {
       body: JSON.stringify({"uid": cookies.uid, "isDisLiked": isDisLiked, "isLiked": isLiked})
     };
 
-    fetch(`http://localhost:3001/post/dislike/${params.id}`, requestOptions)
+    fetch(`${link}/post/dislike/${params.id}`, requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -122,7 +137,6 @@ export default function Posts() {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       if(isLiked){
         setIsLiked(false)
       }
@@ -131,6 +145,16 @@ export default function Posts() {
     .catch((error) => {
       console.error('Error fetching data:', error);
     });
+  }
+
+  const copyLink = () => {
+    navigator.clipboard.writeText("sampleText")
+      .then(() => {
+        alert('Text copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Unable to copy text:', err);
+      });
   }
 
   return (
@@ -160,15 +184,28 @@ export default function Posts() {
           </div>
         </div>
         <div className="posts_body">{postData?.body}</div>
+        <div className="options">
+          <div className="views">
+            <span class="material-symbols-outlined">visibility</span>
+            <div>{postData?.viewedBy.length}</div>
+          </div>
+          <Clipboard className="share" copied={copied} setCopied={setCopied} text={`http://localhost:3000/post/${postData?._id}`} color='white'/>
+          <div className="bookmark">
+            <span class="material-symbols-outlined">bookmark</span>
+          </div>
+        </div>
         <div className="comment_p">
           <textarea className='body_input' name="Text1" cols="40" rows="4" value={body} placeholder='Comment' onChange={(e)=>setBody(e.target.value)}></textarea>
         </div>
         <div className="com_but" onClick={postComment}>Comment</div>
       </div>
       <div className="posts_comments scroll-container">
-        <div className="comment_title">Comments</div>
+        <div className="comment_head">
+          <div className="comment_title">Comments</div>
+          <div>{`• ${!comments?.length?"0":comments?.length }`}</div>
+        </div>
         <div>
-          {
+          { comments?.length?
             comments?.map((comment)=>{
               return (
                 <div className="com_body">
@@ -182,7 +219,7 @@ export default function Posts() {
                   </div>
                 </div>
               );
-            })
+            }):<div className="first_comment">Be the first person to comment!</div>
           }
         </div>
       </div>

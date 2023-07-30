@@ -22,21 +22,10 @@ export default function Nav() {
     removeCookie("uname", { path: "/" });
     removeCookie("email", { path: "/" });
     removeCookie("icon", { path: "/" });
+    removeCookie("sortBy", { path: "/" });
+    removeCookie("recent_posts", { path: "/" });
     navigate("/");
   };
-
-  // useEffect(()=>{
-  //   async function getUser (){
-  //     if (cookies.uid) {
-  //       var resp = await fetch(`http://localhost:3001/user/${cookies.uid}`);
-  //       const respi = await resp.json();
-  //       setUser(respi);
-  //     }
-  //   }
-  //   getUser();
-  // },[])
-
-  // console.log(user);
 
   const ghostMode = () => {
     setCookie("ghost", "ghost", { path: "/" });

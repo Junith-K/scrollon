@@ -6,6 +6,7 @@ import {icons} from "../../Icons/Icons.js";
 import ReactModal from 'react-modal';
 import moment from 'moment/moment';
 import validator from 'validator';
+import link from '../../constants'
 import getToastError from '../Toast/Toast';
 
 
@@ -31,7 +32,7 @@ const navigate = useNavigate();
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({"email": email.toString(),"uname": uname.toString(), "password":pass.toString(), icon: key!=""?key:"profile", "registered_date": moment()})
       };
-      fetch("http://localhost:3001/register", requestOptions)
+      fetch(`${link}/register`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
           removeCookie("ghost", {path: "/"})
@@ -40,6 +41,7 @@ const navigate = useNavigate();
           setCookie("uname", uname, { path: "/" });
           setCookie("icon", key != "" ? key : "profile", { path: "/" });
           setCookie('sortBy', "latest", { path: '/' })
+          setCookie('recent_posts', [], { path: '/' })
           navigate("/");
         });
     }

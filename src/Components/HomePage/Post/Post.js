@@ -6,6 +6,7 @@ import getTime from '../../../Time/Time';
 import moment from 'moment/moment';
 import { useCookies } from "react-cookie";
 import getToastError from '../../Toast/Toast';
+import link from '../../../constants';
 
 export default function Post(props) {
 
@@ -24,18 +25,18 @@ export default function Post(props) {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     };
-    fetch("http://localhost:3001/get-posts", requestOptions)
+    fetch(`${link}/get-posts`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(sort)
         let temp = [...data]
         if(sort=="latest"){
           temp.sort((a, b) => new Date(b.posted_time) - new Date(a.posted_time));
         }else if(sort=="liked"){
           temp.sort((a, b) => b.likes - a.likes);
-          console.log(temp)
         }else if(sort=="disliked"){
           temp.sort((a, b) => a.likes - b.likes);
+        }else if(sort=="top"){
+          temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
         }
         
         setPost(temp);
@@ -55,21 +56,18 @@ export default function Post(props) {
   const sortBy = () => {
     let temp = [...posts]
     if(sort=="latest"){
-      console.log("latest")
       temp.sort((a, b) => new Date(b.posted_time) - new Date(a.posted_time));
     }else if(sort=="liked"){
       temp.sort((a, b) => b.likes - a.likes);
-      console.log("liked")
     }else if(sort=="disliked"){
       temp.sort((a, b) => a.likes - b.likes);
-      console.log("disliked")
+    }else if(sort=="top"){
+      temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
     }
-    console.log(temp)
     setPost(temp);
   }
 
   useEffect(()=>{
-    console.log("sorting")
     sortBy()
   },[sort])
 

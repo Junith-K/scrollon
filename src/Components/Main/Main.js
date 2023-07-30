@@ -10,13 +10,14 @@ import ReactModal from "react-modal";
 import { useNavigate } from 'react-router-dom'
 import moment from 'moment/moment'
 import getToastError from '../Toast/Toast'
+import link from '../../constants'
 
 export default function Main() {
   const [showModal, setShowModal] = useState(false);
   const [tag, setTag] = useState("")
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("");
-  const [cookies, setCookie] = useCookies(["uid", "uname", "ghost", "sortBy"]);
+  const [cookies, setCookie] = useCookies(["uid", "uname", "ghost", "sortBy", "recent_posts"]);
   const navigate = useNavigate()
   const [sort, setSort] = useState(cookies.sortBy)
 
@@ -44,7 +45,7 @@ export default function Main() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0, "likedBy": [], "dislikedBy": [], "viewedBy": []})
     };
-    fetch("http://localhost:3001/create-post", requestOptions)
+    fetch(`${link}/create-post`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         handleSubmitModal()
@@ -73,7 +74,7 @@ export default function Main() {
         <div className='createpost'>Create Post</div>
         <div className='inputs'>
           <input className='title_input' type="text" placeholder='Title' value={title} onChange={(e)=>setTitle(e.target.value)}></input>
-          <textarea className='body_input' name="Text1" cols="40" rows="5" value={body} placeholder='Body (Optional)' onChange={(e)=>setBody(e.target.value)}></textarea>
+          <textarea className='body_input' name="Text1" cols="40" rows="5" value={body} placeholder='Body' onChange={(e)=>setBody(e.target.value)}></textarea>
           <input className='tag_input' type="text" placeholder='Add a Tag' value={tag} onChange={(e)=>setTag(e.target.value)}></input>
         </div>
         <div onClick={handleCloseModal}>close</div>

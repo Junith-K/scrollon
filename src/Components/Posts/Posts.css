@@ -156,6 +156,20 @@
 .comment_title{
     text-align: center;
     font-size: larger;
+    color: white;   
+}
+
+.comment_head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #808080;
+}
+
+.first_comment{
+    margin: 1em;
+    text-align: center;
+    background-color: #808080;
 }
 
 .com_body{
@@ -218,4 +232,41 @@
     text-align: end;
     padding: 0.5em;
     cursor: pointer;
+}
+
+.options{
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+.views, .share, .bookmark{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: #808080 solid 1px;
+}
+
+.views:hover, .share:hover, .bookmark:hover{
+    background-color: #808080;
+}
+
+.views{
+    padding: 0.5em 1em 0.5em 1em;
+    gap: 0.45em;
+    border-radius: 10px 0 0 10px;
+}
+
+.share{
+    padding: 0.5em 1em;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+}
+
+.bookmark{
+    padding: 0.5em 1em 0.5em 1em;
+    overflow: hidden;
+    border-radius: 0 10px 10px 0;
 }
