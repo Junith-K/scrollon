@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 import MainUnAuth from "./Components/Main/MainUnAuth";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Test from "./test";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/post/:id" element={<Posts />} />
+          <Route path="/test" element={<Test/>}/>
         </Routes>
       ) : (
         <Routes>

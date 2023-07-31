@@ -23,7 +23,7 @@ export default function Post(props) {
   const getPosts = () => {
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     };
     fetch(`${link}/get-posts`, requestOptions)
       .then((response) => response.json())
