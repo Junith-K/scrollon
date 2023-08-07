@@ -26,10 +26,7 @@
 
 .createpost{
   font-size: x-large;
-}
-
-.modal{
-  padding: 1em 3em;
+  
 }
 
 .title_input{
@@ -71,6 +68,7 @@
   padding: 0.5em 0.5em;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 1em;
+  box-sizing: border-box;
 }
 
 .tag_input::placeholder{
@@ -80,4 +78,16 @@
 .title_input::placeholder, .body_input::placeholder{
   color: #808080;
   font-family: 'Poppins', sans-serif;
+}
+
+.createbutton{
+  display: flex;
+  margin-top: 1em;
+}
+
+.submit, .close{
+  margin: 0 0.5em 0 0.5em;
+  padding: 0.5em;
+  cursor: pointer;
+  border: solid 1px;
 }

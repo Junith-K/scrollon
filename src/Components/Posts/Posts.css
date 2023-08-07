@@ -241,32 +241,144 @@
     margin-top: 1.5em;
 }
 
-.views, .share, .bookmark{
+.views, .share, .bookmark, .edit, .delete{
     display: flex;
     align-items: center;
     cursor: pointer;
     border: #808080 solid 1px;
+    padding: 0.5em 1em 0.5em 1em;
+
 }
 
-.views:hover, .share:hover, .bookmark:hover{
+.views:hover, .share:hover, .bookmark:hover, .edit:hover, .delete:hover{
     background-color: #808080;
 }
 
 .views{
-    padding: 0.5em 1em 0.5em 1em;
     gap: 0.45em;
     border-radius: 10px 0 0 10px;
 }
 
 .share{
-    padding: 0.5em 1em;
     border-radius: 0;
     border-left: none;
     border-right: none;
 }
 
-.bookmark{
-    padding: 0.5em 1em 0.5em 1em;
-    overflow: hidden;
-    border-radius: 0 10px 10px 0;
+.edit{
+    border-left: none;
 }
+
+.delete{
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+}
+
+.modal{
+    padding: 1em 3em;
+    border: solid 2px;
+    border-right-color: #6DC7FF;
+    border-top-color: #E6ABFF;
+    border-left-color: #E6ABFF;
+    border-bottom-color: #6DC7FF;
+    outline: none;
+}
+
+.modal1{
+    width: fit-content;
+    height: fit-content;
+}
+
+.createpost{
+    font-size: x-large;
+    border-bottom: solid 1px white;
+  }
+
+  .createpost1{
+    font-size: x-large;
+    border-bottom: solid 1px white;
+    margin-bottom: 1em;
+  }
+  
+  .title_input{
+    background-color: #222222;
+    color: #d0d0d0;
+    border: none;
+    outline: none;
+    height: 20px;
+    font-size: larger;
+    padding: 0.5em 0.5em;
+    font-weight: bold;
+    margin-bottom: 1em;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .tag_input{
+    background-image: linear-gradient(to right, #6DC7FF, #E6ABFF);
+    color: white;
+    border: none;
+    outline: none;
+    height: 20px;
+    border-radius: 20px;
+    width: 25%;
+    font-size: larger;
+    padding: 0.5em 1em;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1em;
+  }
+  
+  
+  .body_input{
+    resize: none;
+    background-color: #222222;
+    color: #d0d0d0;
+    border: none;
+    outline: none;
+    font-size: medium;
+    padding: 0.5em 0.5em;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+  }
+  
+  .tag_input::placeholder{
+    color: white;
+  }
+  
+  .title_input::placeholder, .body_input::placeholder{
+    color: #808080;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .createbutton{
+    display: flex;
+    margin-top: 1em;
+  }
+  
+  .submit, .close{
+    margin: 0 0.5em 0 0.5em;
+    padding: 0.5em;
+    cursor: pointer;
+    border: solid 1px;
+  }
+
+  .inputs{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 2em;
+  }
+
+.deletemodal{
+    margin: 0 0.5em 0 0.5em;
+    padding: 0.5em;
+    cursor: pointer;
+    border: solid 1px white;
+    display: flex;
+    align-items: center;
+    width: 5em;
+    justify-content: space-between;
+    color: red;
+}
+

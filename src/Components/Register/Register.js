@@ -8,6 +8,8 @@ import moment from 'moment/moment';
 import validator from 'validator';
 import link from '../../constants'
 import getToastError from '../Toast/Toast';
+import { useHotkeys } from 'react-hotkeys-hook'
+
 
 
 export default function Register() {
@@ -18,6 +20,10 @@ const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false)
   const [key,setKey] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
+
+  useHotkeys('enter', () => {
+    sendUser()
+  },{enableOnFormTags: ['INPUT']});
 
   const sendUser = async() => {
     if(email.length==0 || pass.length==0 || uname.length==0){

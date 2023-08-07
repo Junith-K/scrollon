@@ -11,8 +11,10 @@ import { useNavigate } from 'react-router-dom'
 import moment from 'moment/moment'
 import getToastError from '../Toast/Toast'
 import link from '../../constants'
+import Loader from '../Loader/Loader'
+import { useEffect } from 'react'
 
-export default function Main() {
+export default function Main({search, setSearch, isTyping, setIsTyping}) {
   const [showModal, setShowModal] = useState(false);
   const [tag, setTag] = useState("")
   const [title, setTitle] = useState("")
@@ -20,6 +22,31 @@ export default function Main() {
   const [cookies, setCookie] = useCookies(["uid", "uname", "ghost", "sortBy", "recent_posts"]);
   const navigate = useNavigate()
   const [sort, setSort] = useState(cookies.sortBy)
+  const [posts, setPost] = useState([])
+  const [tempposts, setTempPost] = useState([])
+  const [isLoadingPosts, setLoadingPosts] = useState(true);
+
+  useEffect(()=>{
+    if(!isTyping){
+      searchPosts()
+    }
+  },[isTyping])
+
+
+  const searchPosts = (temp) => {
+    const words = search.toLowerCase().split(' ');
+    let pory = temp?temp:posts
+    // Filter the array of objects based on the title containing all words
+    const filteredObjects = pory.filter(obj => {
+      const objTitle = obj.title.toLowerCase();
+      return words.every(word => objTitle.includes(word));
+    });
+
+
+    console.log(filteredObjects)
+    sortBy(filteredObjects)
+    // setTempPost(filteredObjects)
+  }
 
   function handleCloseModal() {
     setShowModal(false);
@@ -54,32 +81,91 @@ export default function Main() {
     
   }
 
+  useEffect(()=>{
+    setLoadingPosts(true);
+    setSearch("") 
+    getPosts();
+  },[])
+
+  const sortBy = (filteredObjects) => {
+    let temp = filteredObjects?[...filteredObjects]:[...tempposts]
+    if(sort=="latest"){
+      temp.sort((a, b) => new Date(b.posted_time) - new Date(a.posted_time));
+    }else if(sort=="liked"){
+      temp.sort((a, b) => b.likes - a.likes);
+    }else if(sort=="disliked"){
+      temp.sort((a, b) => a.likes - b.likes);
+    }else if(sort=="top"){
+      temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
+    }
+    setTempPost(temp);
+  }
+
+  useEffect(()=>{
+    sortBy()
+  },[sort])
+
+  const getPosts = () => {
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${link}/get-posts`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        let temp = [...data]
+        if(sort=="latest"){
+          temp.sort((a, b) => new Date(b.posted_time) - new Date(a.posted_time));
+        }else if(sort=="liked"){
+          temp.sort((a, b) => b.likes - a.likes);
+        }else if(sort=="disliked"){
+          temp.sort((a, b) => a.likes - b.likes);
+        }else if(sort=="top"){
+          temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
+        }
+        console.log(temp)
+        setLoadingPosts(false)
+        setPost(temp);
+        setTempPost(temp)
+        console.log(search)
+      });
+
+  }
+  
+  if(!isLoadingPosts){
+    return (
+      <>
+        <div style={{ paddingTop: "100px", margin: "0em 3em" }}>
+          <Sort setSort={setSort} sort={sort}/>
+          <div className="app_main">
+            <Post posts={tempposts} search={search}/>
+            <Viewed />
+          </div>
+        </div>
+        <img className="floating_button" onClick={handleOpenModal} src={add} />
+        <ReactModal
+          isOpen={showModal}
+          contentLabel="onRequestClose Example"
+          onRequestClose={handleCloseModal}
+          className="modal"
+          overlayClassName="overlay"
+        >
+          <div className='createpost'>Create Post</div>
+          <div className='inputs'>
+            <input className='title_input' type="text" placeholder='Title' value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+            <textarea className='body_input' rows={5} cols={40} value={body} placeholder='Body' onChange={(e)=>setBody(e.target.value)}></textarea>
+            <input className='tag_input' type="text" placeholder='Add a Tag' value={tag} onChange={(e)=>setTag(e.target.value)}></input>
+          </div>
+          <div className='createbutton'>
+            <div className='close'onClick={handleCloseModal}>Close</div>
+            <div className='submit'onClick={createPost}>Submit</div>
+          </div>
+        </ReactModal>
+      </>
+    );
+  }
+
   return (
-    <>
-      <div style={{ paddingTop: "100px", margin: "0em 3em" }}>
-        <Sort setSort={setSort} sort={sort}/>
-        <div className="app_main">
-          <Post sort={sort}/>
-          <Viewed />
-        </div>
-      </div>
-      <img className="floating_button" onClick={handleOpenModal} src={add} />
-      <ReactModal
-        isOpen={showModal}
-        contentLabel="onRequestClose Example"
-        onRequestClose={handleCloseModal}
-        className="modal"
-        overlayClassName="overlay"
-      >
-        <div className='createpost'>Create Post</div>
-        <div className='inputs'>
-          <input className='title_input' type="text" placeholder='Title' value={title} onChange={(e)=>setTitle(e.target.value)}></input>
-          <textarea className='body_input' name="Text1" cols="40" rows="5" value={body} placeholder='Body' onChange={(e)=>setBody(e.target.value)}></textarea>
-          <input className='tag_input' type="text" placeholder='Add a Tag' value={tag} onChange={(e)=>setTag(e.target.value)}></input>
-        </div>
-        <div onClick={handleCloseModal}>close</div>
-        <div onClick={createPost}>Submit</div>
-      </ReactModal>
-    </>
+    <Loader/>
   );
 }

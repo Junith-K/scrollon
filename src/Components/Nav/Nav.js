@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import logo from "../../Icons/B_64.png";
 import Icons from "../../Icons/Icons.js";
 import "./Nav.css";
 import { useCookies } from "react-cookie";
+import debounce from 'lodash.debounce';
 
-export default function Nav() {
+
+
+export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping}) {
   const [cookies, setCookie, removeCookie] = useCookies([
     "uid",
     "uname",
@@ -16,6 +19,11 @@ export default function Nav() {
   ]);
   const navigate = useNavigate();
   const [empty, setEmpty] = useState();
+
+  useEffect(()=>{
+    console.log(isTyping)
+  },[isTyping])
+  
 
   const logOut = () => {
     removeCookie("uid", { path: "/" });
@@ -38,6 +46,29 @@ export default function Nav() {
     navigate("/");
   };
 
+  useEffect(() => {
+    let typingTimer;
+
+    if (search) {
+      setIsTyping(true);
+
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        setIsTyping(false);
+      }, 1500);
+    } else {
+      setIsTyping(false);
+    }
+
+    return () => {
+      clearTimeout(typingTimer);
+    };
+  }, [search]);
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <div className="nav">
       <Link style={{ textDecoration: "none" }} to="/">
@@ -48,7 +79,7 @@ export default function Nav() {
       </Link>
       <div class="box">
         <span class="material-symbols-outlined">search</span>
-        <input type="text" name="" placeholder="Search Bloggy" />
+        <input ref={inputRef} type="text" name="search" value={search} onChange={(e)=>{handleSearchChange(e)}} placeholder="Search Bloggy (Ctrl+Q)" />
       </div>
       {cookies.uid ? (
         <div className="profile">

@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import link from '../../constants'
 import getToastError from '../Toast/Toast';
+import { useHotkeys } from 'react-hotkeys-hook'
 
 
 export default function Signin() {
@@ -12,6 +13,9 @@ export default function Signin() {
     const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
     const [pass, setPass] = useState("");
     const navigate = useNavigate();
+    useHotkeys('enter', () => {
+      signIn()
+    },{enableOnFormTags: ['INPUT']});
 
     const signIn = () => {
       const requestOptions = {
@@ -48,6 +52,7 @@ export default function Signin() {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            // ref={ref}
             type="text"
             name=""
             placeholder="Email"
@@ -59,6 +64,7 @@ export default function Signin() {
             onChange={(e) => {
               setPass(e.target.value);
             }}
+            // ref={ref}
             type="text"
             name=""
             placeholder="Password"

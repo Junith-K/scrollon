@@ -1,3 +1,4 @@
+import React, { useState, useRef } from "react";
 import "./App.css";
 import Nav from "./Components/Nav/Nav";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";  
@@ -10,18 +11,27 @@ import MainUnAuth from "./Components/Main/MainUnAuth";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Test from "./test";
+import { useHotkeys } from 'react-hotkeys-hook'
+
 
 
 function App() {
   const [cookies, setCookie] = useCookies(["uid", "uname", "icon", "ghost"]);
+  const inputRef = useRef(null)
+  const [search, setSearch] = useState("")
+  const [isTyping, setIsTyping] = useState(false);
+
+  useHotkeys('ctrl+q', () => {
+    inputRef.current.focus();
+  });
 
   return (
     <Router>
-      <Nav />
+      <Nav inputRef={inputRef} search={search} setSearch={setSearch} isTyping={isTyping} setIsTyping={setIsTyping}/>
       <ToastContainer />
       {cookies.uid || cookies.ghost ? (
         <Routes>
-          <Route exact path="/" element={<Main />} />
+          <Route exact path="/" element={<Main search={search} setSearch={setSearch} isTyping={isTyping} setIsTyping={setIsTyping}/>} />
           <Route path="/post/:id" element={<Posts />} />
           <Route path="/test" element={<Test/>}/>
         </Routes>
@@ -29,6 +39,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<MainUnAuth />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/test" element={<Test/>}/>
           <Route path="/sign-in" element={<Signin />} />
         </Routes>
       )}
