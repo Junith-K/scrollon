@@ -69,6 +69,10 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
     setSearch(event.target.value);
   };
 
+  const gotoProfile = () => {
+    navigate("/profile")
+  }
+
   return (
     <div className="nav">
       <Link style={{ textDecoration: "none" }} to="/">
@@ -89,8 +93,13 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
           </div>
           <span class="material-symbols-outlined">keyboard_arrow_down</span>
           <div class="dropdown">
+            <div onClick={gotoProfile} className="logout">
+              <span class="material-symbols-outlined profilebut">person</span>
+              <span>Profile</span>
+            </div>
             <div className="logout" onClick={logOut}>
-              Logout
+              <span class="material-symbols-outlined profilebut">logout</span>
+              <span >Logout</span>
             </div>
           </div>
         </div>

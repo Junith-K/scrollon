@@ -216,7 +216,6 @@
 
 .comment_p{
     margin-top: 2em;
-    margin-right: 1em;
     margin-bottom: 0;
 }
 
@@ -329,7 +328,7 @@
   }
   
   
-  .body_input{
+  .body_input1{
     resize: none;
     background-color: #222222;
     color: #d0d0d0;
@@ -346,7 +345,7 @@
     color: white;
   }
   
-  .title_input::placeholder, .body_input::placeholder{
+  .title_input::placeholder, .body_input1::placeholder{
     color: #808080;
     font-family: 'Poppins', sans-serif;
   }

@@ -25,6 +25,7 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
   const [posts, setPost] = useState([])
   const [tempposts, setTempPost] = useState([])
   const [isLoadingPosts, setLoadingPosts] = useState(true);
+  const [rev, setRev] = useState(false)
 
   useEffect(()=>{
     if(!isTyping){
@@ -70,7 +71,7 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0, "likedBy": [], "dislikedBy": [], "viewedBy": []})
+      body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0, "likedBy": [], "dislikedBy": [], "viewedBy": [], "saved_by": []})
     };
     fetch(`${link}/create-post`, requestOptions)
       .then((response) => response.json())
@@ -98,7 +99,12 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
     }else if(sort=="top"){
       temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
     }
-    setTempPost(temp);
+    if(rev){
+      setTempPost([...temp].reverse())
+    }
+    else{
+      setTempPost(temp);
+    }
   }
 
   useEffect(()=>{
@@ -131,12 +137,17 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
       });
 
   }
+
+  const setSwap = () => {
+    setTempPost([...tempposts].reverse())
+    setRev(!rev)
+  }
   
   if(!isLoadingPosts){
     return (
       <>
         <div style={{ paddingTop: "100px", margin: "0em 3em" }}>
-          <Sort setSort={setSort} sort={sort}/>
+          <Sort setSort={setSort} sort={sort} setSwap={setSwap} rev={rev}/>
           <div className="app_main">
             <Post posts={tempposts} search={search}/>
             <Viewed />

@@ -8,7 +8,7 @@ import getToastError from '../../Toast/Toast';
 
 export default function Post(props) {
 
-  const { posts, search } = props;
+  const { posts, search, profile } = props;
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(["ghost", "uid", "sortBy"]);
 
@@ -24,7 +24,7 @@ export default function Post(props) {
     <div className="post">
         {posts.length!=0?
           posts?.map((post)=>{
-            let viewed = post.viewedBy?.some((view) => view === cookies.uid)
+            let viewed = post.viewedBy?.some((view) => view.userid === cookies.uid)
             return (
               <div onClick={()=>goToPost(post._id)} className="post_main">
                 <div className="post_body">
@@ -34,7 +34,6 @@ export default function Post(props) {
                       {post?.title}
                     </div>
                     <span className="post_content">Posted By</span><span className="post_content" style={post?.uid==cookies.uid?{color: "#E6ABFF"}:{}}>{` ${post?.username} `}</span><span className="post_content">{getTime(moment(),moment(post?.posted_time))} ago</span>
-                    {/* <div className="post_content">{`Posted by ${post?.username} ${getTime(moment(),moment(post?.posted_time))} ago`}</div> */}
                   </div>
                 </div>
                 <div className="post_foot">

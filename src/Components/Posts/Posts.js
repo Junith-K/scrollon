@@ -59,11 +59,11 @@ export default function Posts() {
       .then((data) => {
         setPostData(data);
         setComment(data.comment)
-        setIsLiked(data.likedBy?.some((liked) => liked === cookies.uid))
-        setIsDisLiked(data.dislikedBy?.some((disliked) => disliked === cookies.uid))
+        setIsLiked(data.likedBy?.some((liked) => liked.userid === cookies.uid))
+        setIsDisLiked(data.dislikedBy?.some((disliked) => disliked.userid === cookies.uid))
         setLike(data.likes)
         console.log(data["saved_by"])
-        setBook(data["saved_by"]?.some((saved) => saved === cookies.uid))
+        setBook(data["saved_by"]?.some((saved) => saved.userid === cookies.uid))
         const foundIndex = cookies.recent_posts.findIndex(item => item.post_title === data.title && item.post_id === data._id);
         let temp = [...cookies.recent_posts];
         console.log(temp)
@@ -113,7 +113,7 @@ export default function Posts() {
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"uid": cookies.uid, "isLiked": isLiked, "isDisLiked": isDisLiked})
+      body: JSON.stringify({"uid": cookies.uid, "isLiked": isLiked, "isDisLiked": isDisLiked, "viewed_time": new Date().toISOString()})
     };
 
     fetch(`${link}/post/like/${params.id}`, requestOptions)
@@ -146,11 +146,10 @@ export default function Posts() {
         setLike(like-1);
       }
     }
-
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"uid": cookies.uid, "isDisLiked": isDisLiked, "isLiked": isLiked})
+      body: JSON.stringify({"uid": cookies.uid, "isDisLiked": isDisLiked, "isLiked": isLiked, "viewed_time": new Date().toISOString()})
     };
 
     fetch(`${link}/post/dislike/${params.id}`, requestOptions)
@@ -175,7 +174,7 @@ export default function Posts() {
     const requestOptions = {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"post_id": postData._id, "post_title": postData.title})
+      body: JSON.stringify({"post_id": postData._id, "post_title": postData.title, "saved_time": new Date().toISOString()})
     };
 
     fetch(`${link}/post/save/${cookies.uid}/${!book}`, requestOptions)
@@ -323,15 +322,19 @@ export default function Posts() {
             <div>{postData?.viewedBy.length}</div>
           </div>
           <Clipboard className="share" copied={copied} setCopied={setCopied} text={`http://localhost:3000/post/${postData?._id}`} color='white'/>
-          <div onClick={savePost} className="bookmark">
+          <div style={postData?.uid!=cookies.uid?{borderRadius: "0 10px 10px 0"}:{}} onClick={savePost} className="bookmark">
             <span style={book?{"font-variation-settings": "'FILL' 1"}:{}} class="material-symbols-outlined">bookmark</span>
           </div>
-          <div onClick={handleOpenModal} className="edit">
-            <span class="material-symbols-outlined">edit</span>
-          </div>
-          <div onClick={handleOpenModal1} className="delete">
-            <span class="material-symbols-outlined">delete</span>
-          </div>
+          {postData?.uid==cookies.uid?
+          <>
+            <div onClick={handleOpenModal} className="edit">
+              <span class="material-symbols-outlined">edit</span>
+            </div>
+            <div onClick={handleOpenModal1} className="delete">
+              <span class="material-symbols-outlined">delete</span>
+            </div>
+          </>:
+          <></>}
         </div>
         <div className="comment_p">
           <textarea className='body_input' name="Text1" cols="40" rows="4" value={body} placeholder='Comment' onChange={(e)=>setBody(e.target.value)}></textarea>
@@ -372,7 +375,7 @@ export default function Posts() {
           <div className='createpost'>Update Post</div>
           <div className='inputs'>
             <input className='title_input' type="text" placeholder='Title' value={title} onChange={(e)=>setTitle(e.target.value)}></input>
-            <textarea className='body_input' rows={5} cols={40} value={body1} placeholder='Body' onChange={(e)=>setBody1(e.target.value)}></textarea>
+            <textarea className='body_input1' rows={5} cols={40} value={body1} placeholder='Body' onChange={(e)=>setBody1(e.target.value)}></textarea>
             <input className='tag_input' type="text" placeholder='Add a Tag' value={tag} onChange={(e)=>setTag(e.target.value)}></input>
           </div>
           <div className='createbutton'>

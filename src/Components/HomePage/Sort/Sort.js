@@ -5,7 +5,7 @@ import "./Sort.css";
 export default function Sort(props) {
 
   const [cookies, setCookie] = useCookies(["sortBy"]);
-  const {setSort, sort} = props;
+  const {setSort, sort, setSwap, rev} = props;
 
   const sorting = (sort) => {
     setSort(sort)
@@ -20,7 +20,7 @@ export default function Sort(props) {
         <div style={sort=="liked"?{backgroundColor: "white", color: "black"}:{}} onClick={()=>{sorting("liked")}} className="sort_name">Most Liked</div>
         <div style={sort=="disliked"?{backgroundColor: "white", color: "black"}:{}} onClick={()=>{sorting("disliked")}} className="sort_name">Disliked</div>
       </div>
-      <div>Icon</div>
+      <span onClick={setSwap} style={rev?{backgroundColor: "white", color: "black"}:{}} class="material-symbols-outlined swap_ver">swap_vert</span>
     </div>
   );
 }

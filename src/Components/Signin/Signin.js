@@ -53,6 +53,7 @@ export default function Signin() {
               setEmail(e.target.value);
             }}
             // ref={ref}
+            autoFocus={true}
             type="text"
             name=""
             placeholder="Email"

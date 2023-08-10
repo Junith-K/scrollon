@@ -1,3 +1,8 @@
+.profiles{
+    padding-top: 100px;
+    margin: 0 3em;
+}
+
 .sort{
     border: #808080 solid 1px;
     display: flex;
@@ -18,10 +23,8 @@
     font-size: medium;
     cursor: pointer;
 }
-
 .swap_ver{
-    font-variation-settings: 'FILL' 0,'wght' 500,'GRAD' 200,'opsz' 48;
-    font-size: 2em;
-    cursor: pointer;
-    border-radius: 5px;
-  }
+  font-variation-settings: 'FILL' 0,'wght' 300,'GRAD' 200,'opsz' 48;
+  font-size: 2em;
+  cursor: pointer;
+}

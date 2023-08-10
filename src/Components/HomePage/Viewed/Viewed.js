@@ -12,7 +12,7 @@ export default function Viewed() {
       <div className="viewed_title">Last Viewed</div>
       <div className="viewed_body">
         {cookies?.recent_posts?.length!=0?cookies?.recent_posts?.map((recent)=>{
-          return <div onClick={()=>{navigate(`/post/${recent.post_id}`)}} className="viewed_titles">{`• ${recent.post_title}`}</div>;
+          return <div onClick={()=>{navigate(`/post/${recent.post_id}`)}} className="viewed_titles hover-underline-animation">{`• ${recent.post_title}`}</div>;
         }):<div style={{textAlign: "center"}}>No recent posts</div>}
       </div>
     </div>

@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Test from "./test";
 import { useHotkeys } from 'react-hotkeys-hook'
+import Profile from "./Components/Profile/Profile";
 
 
 
@@ -33,6 +34,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main search={search} setSearch={setSearch} isTyping={isTyping} setIsTyping={setIsTyping}/>} />
           <Route path="/post/:id" element={<Posts />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/test" element={<Test/>}/>
         </Routes>
       ) : (
