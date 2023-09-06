@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../Icons/hebbaadh.png";
 import Icons from "../../Icons/Icons.js";
 import "./Nav.css";
@@ -18,6 +18,7 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
   ]);
   const navigate = useNavigate();
   const [empty, setEmpty] = useState();
+  const location = useLocation();
   
 
   const logOut = () => {
@@ -68,6 +69,7 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
     navigate("/profile")
   }
 
+
   return (
     <div className="nav">
       <Link style={{ textDecoration: "none" }} to="/">
@@ -75,10 +77,10 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
           <img style={{width: "175px", padding: "0 1em"}} src={logo} alt="Scrollon"></img>
         </div>
       </Link>
-      <div class="box">
+      {location.pathname==="/" && <div class="box">
         <span class="material-symbols-outlined">search</span>
         <input ref={inputRef} type="text" name="search" value={search} onChange={(e)=>{handleSearchChange(e)}} placeholder="Search Scrollon (Ctrl+Q)" />
-      </div>
+      </div>}
       {cookies.uid ? (
         <div className="profile">
           <div className="profile_body">

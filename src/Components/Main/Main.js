@@ -191,6 +191,6 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
   }
 
   return (
-    <Loader/>
+    <Loader height={1000}/>
   );
 }

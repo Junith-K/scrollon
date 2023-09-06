@@ -87,7 +87,7 @@ function Profile(){
             </div>
         );
     }
-    return <Loader/>
+    return <Loader height={600}/>
 
     
 }

@@ -3,13 +3,14 @@ import ContentLoader, { Facebook } from 'react-content-loader'
 import "./Loader.css"
 
 
-export default function Loader(){
+export default function Loader(props){
+    const {height} = props;
     return (
       <div style={{ paddingTop: "100px", margin: "0em 3em", zIndex: "1"}}>
         <ContentLoader
           speed={1}
           style={{width: "100%",position: 'relative'}}
-          height={1000}
+          height={height}
           backgroundColor="#222222"
           foregroundColor="#4f4f4f"
         >
