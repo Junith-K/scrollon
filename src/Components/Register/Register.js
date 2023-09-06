@@ -20,6 +20,7 @@ const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false)
   const [key,setKey] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
+  const [showPassword, setShowPassword] = useState(false);
 
   useHotkeys('enter', () => {
     sendUser()
@@ -39,17 +40,28 @@ const navigate = useNavigate();
         body: JSON.stringify({"email": email.toString(),"uname": uname.toString(), "password":pass.toString(), icon: key!=""?key:"profile", "registered_date": moment()})
       };
       fetch(`${link}/register`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          removeCookie("ghost", {path: "/"})
-          setCookie('uid', data.insertedId, { path: '/' })
-          setCookie('email', email, { path: '/' })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.error) {
+          getToastError(data.error)
+          console.error("Server error:", data.error);
+        } else {
+          removeCookie("ghost", { path: "/" });
+          setCookie('uid', data.insertedId, { path: '/' });
+          setCookie('email', email, { path: '/' });
           setCookie("uname", uname, { path: "/" });
-          setCookie("icon", key != "" ? key : "profile", { path: "/" });
-          setCookie('sortBy', "latest", { path: '/' })
-          setCookie('recent_posts', [], { path: '/' })
+          setCookie("icon", key !== "" ? key : "profile", { path: "/" });
+          setCookie('sortBy', "latest", { path: '/' });
+          setCookie('recent_posts', [], { path: '/' });
           navigate("/");
-        });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        getToastError("Some Error Occured")
+      });
     }
   }
 
@@ -70,6 +82,11 @@ const navigate = useNavigate();
     setKey(item)
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
   const keys = Object.keys(icons)
 
   return (
@@ -85,13 +102,13 @@ const navigate = useNavigate();
           <input onChange={(e)=>{e.target.value.length<=12 && setUname(e.target.value)}} value={uname} type="text" name="" placeholder="Username" />
         </div>
         <div class="box">
-          <span class="material-symbols-outlined">key</span>
-          <input onChange={(e)=>{e.target.value.length<=12 && setPass(e.target.value)}} value={pass} type="text" name="" placeholder="Password" />
+          <span class="material-symbols-outlined" style={{cursor: "pointer"}} onClick={togglePasswordVisibility}>key</span>
+          <input onChange={(e)=>{e.target.value.length<=12 && setPass(e.target.value)}} value={pass} type={showPassword ? 'text' : 'password'} name="" placeholder="Password" />
         </div>
         <div className='profile_icon'>
           <div className="profilee">
             <div className="profilee_body">
-              <img src={key!=""?icons[key]:icons["profile"]} alt="bloggy"></img>
+              <img src={key!=""?icons[key]:icons["profile"]} alt="Scrollon"></img>
               <div className="profilee_name">{uname}</div>
             </div>
           </div>
@@ -106,7 +123,7 @@ const navigate = useNavigate();
           <div className='icon_title'>Profile Icon</div>
           <div className='modal_choose'>
             {keys.map((item)=>{
-              return <img key={item} className={key==item?`selected_icon`:``} onClick={()=>selectedIcon(item)} src={icons[item]} alt="bloggy"></img>;
+              return <img key={item} className={key==item?`selected_icon`:``} onClick={()=>selectedIcon(item)} src={icons[item]} alt="Scrollon"></img>;
             })}
           </div>
           <div className='modal_buttons'>

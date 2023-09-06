@@ -13,6 +13,8 @@ export default function Signin() {
     const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
     const [pass, setPass] = useState("");
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
     useHotkeys('enter', () => {
       signIn()
     },{enableOnFormTags: ['INPUT']});
@@ -24,23 +26,32 @@ export default function Signin() {
         body: JSON.stringify({"email": email.toString(), "password":pass.toString()})
       };
       fetch(`${link}/sign-in`, requestOptions)
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
-          if(!data.error){
-          removeCookie("ghost",{path: "/"})
-          setCookie('uid', data._id, { path: '/' })
-          setCookie('email', email, { path: '/' })
+        if (!data.error) {
+          removeCookie("ghost", { path: "/" });
+          setCookie('uid', data._id, { path: '/' });
+          setCookie('email', email, { path: '/' });
           setCookie("uname", data.uname, { path: "/" });
-          setCookie('icon', data.icon, { path: "/" })
-          setCookie('sortBy', "latest", { path: '/' })
-          setCookie('recent_posts', [], { path: '/' })
+          setCookie('icon', data.icon, { path: "/" });
+          setCookie('sortBy', "latest", { path: '/' });
+          setCookie('recent_posts', [], { path: '/' });
           navigate("/");
-          }
-          else{
-              getToastError("Wrong Details")
-          }
+        } else {
+          getToastError(data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        getToastError("Some Error Occured")
       });
     }
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
   return (
     <div className="regis_main">
@@ -60,13 +71,13 @@ export default function Signin() {
           />
         </div>
         <div class="box">
-          <span class="material-symbols-outlined">key</span>
+          <span class="material-symbols-outlined" style={{cursor: "pointer"}} onClick={togglePasswordVisibility}>key</span>
           <input
             onChange={(e) => {
               setPass(e.target.value);
             }}
             // ref={ref}
-            type="text"
+            type={showPassword ? 'text' : 'password'}
             name=""
             placeholder="Password"
           />

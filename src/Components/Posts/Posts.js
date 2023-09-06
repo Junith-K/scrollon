@@ -55,8 +55,11 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
     };
     fetch(`${link}/post/${params.id}?uid=${cookies.uid}`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        getToastError(data.error);
+      } else {
         setPostData(data);
         setComment(data.comment)
         setIsLiked(data.likedBy?.some((liked) => liked.userid === cookies.uid))
@@ -81,7 +84,11 @@ export default function Posts() {
         else{
           setCookie("recent_posts", [{"post_title": data.title, "post_id": data._id},...cookies.recent_posts])
         }
-      });
+      }
+    })
+    .catch((error) => {
+      getToastError("An error occurred while fetching data");
+    });
   }
 
 
@@ -93,10 +100,17 @@ export default function Posts() {
       body: JSON.stringify({"comment": body, "uid": cookies.uid, "username": cookies.uname, "icon": cookies.icon, "commented_time": today})
     };
     fetch(`${link}/comment/${postData._id}`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        getToastError(data.error);
+      } else {
         setBody("")
-      });
+      }
+    })
+    .catch((error) => {
+      getToastError("An error occurred while fetching data");
+    });
   }
 
   const likePost = () => {
@@ -115,24 +129,21 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"uid": cookies.uid, "isLiked": isLiked, "isDisLiked": isDisLiked, "viewed_time": new Date().toISOString()})
     };
-
     fetch(`${link}/post/like/${params.id}`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      if(isDisLiked){
-        setIsDisLiked(false)
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        if(isDisLiked){
+          setIsDisLiked(false)
+        }
+        setIsLiked(!isLiked)
       }
-      setIsLiked(!isLiked)
     })
     .catch((error) => {
-      console.error('Error fetching data:', error);
+      getToastError("An error occurred while fetching data");
     });
-
   }
 
   const dislikePost = () => {
@@ -151,22 +162,20 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"uid": cookies.uid, "isDisLiked": isDisLiked, "isLiked": isLiked, "viewed_time": new Date().toISOString()})
     };
-
     fetch(`${link}/post/dislike/${params.id}`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      if(isLiked){
-        setIsLiked(false)
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        if(isLiked){
+          setIsLiked(false)
+        }
+        setIsDisLiked(!isDisLiked)
       }
-      setIsDisLiked(!isDisLiked)
     })
     .catch((error) => {
-      console.error('Error fetching data:', error);
+      getToastError("An error occurred while fetching data");
     });
   }
 
@@ -176,20 +185,18 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"post_id": postData._id, "post_title": postData.title, "saved_time": new Date().toISOString()})
     };
-
     fetch(`${link}/post/save/${cookies.uid}/${!book}`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      setBook(!book)
-      console.log(data)
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        setBook(!book)
+        console.log(data)
+      }
     })
     .catch((error) => {
-      console.error('Error fetching data:', error);
+      getToastError("An error occurred while fetching data");
     });
   }
 
@@ -238,24 +245,21 @@ export default function Posts() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"body": body1, "title": title, "tag": tag})
     };
-
     fetch(`${link}/post/update/${postData._id}`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      handleSubmitModal()
-      setPostData(data.value)
-      let temp = [...cookies.recent_posts]
-      temp.shift()
-      setCookie("recent_posts", [{"post_title": data.value.title, "post_id": data.value._id}, ...temp])
-      
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        handleSubmitModal()
+        setPostData(data.value)
+        let temp = [...cookies.recent_posts]
+        temp.shift()
+        setCookie("recent_posts", [{"post_title": data.value.title, "post_id": data.value._id}, ...temp])
+      }
     })
     .catch((error) => {
-      console.error('Error fetching data:', error);
+      getToastError("An error occurred while fetching data");
     });
   }
 
@@ -267,22 +271,21 @@ export default function Posts() {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     };
-
     fetch(`${link}/post/delete/${postData._id}`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      console.log(data)
-      navigate("/")
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        console.log(data)
+        navigate("/")
+      }
     })
     .catch((error) => {
-      console.error('Error fetching data:', error);
+      getToastError("An error occurred while fetching data");
     });
   }
+  console.log(comments)
 
   return (
     <div className="posts">
@@ -299,7 +302,7 @@ export default function Posts() {
             <>
               <div className="tit_bottom">
                 <div className="tit_top">
-                  <img key={postData?.icon} src={Icons[postData?.icon?postData?.icon:"profile"]} alt="bloggy"></img>
+                  <img key={postData?.icon} src={Icons[postData?.icon?postData?.icon:"profile"]} alt="Scrollon"></img>
                   <div>
                   <div className="tit_name">{`Posted by ${postData?.username}`}</div>
                   <div className="tit_name">{`• ${getTime(moment(),moment(postData?.posted_time))} ago`}</div>

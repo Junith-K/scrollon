@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import logo from "../../Icons/B_64.png";
+import logo from "../../Icons/hebbaadh.png";
 import Icons from "../../Icons/Icons.js";
 import "./Nav.css";
 import { useCookies } from "react-cookie";
-import debounce from 'lodash.debounce';
 
 
 
@@ -19,10 +18,6 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
   ]);
   const navigate = useNavigate();
   const [empty, setEmpty] = useState();
-
-  useEffect(()=>{
-    console.log(isTyping)
-  },[isTyping])
   
 
   const logOut = () => {
@@ -77,18 +72,17 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
     <div className="nav">
       <Link style={{ textDecoration: "none" }} to="/">
         <div className="nav_main">
-          <img src={logo} alt="bloggy"></img>
-          <div className="title">Bloggy</div>
+          <img style={{width: "175px", padding: "0 1em"}} src={logo} alt="Scrollon"></img>
         </div>
       </Link>
       <div class="box">
         <span class="material-symbols-outlined">search</span>
-        <input ref={inputRef} type="text" name="search" value={search} onChange={(e)=>{handleSearchChange(e)}} placeholder="Search Bloggy (Ctrl+Q)" />
+        <input ref={inputRef} type="text" name="search" value={search} onChange={(e)=>{handleSearchChange(e)}} placeholder="Search Scrollon (Ctrl+Q)" />
       </div>
       {cookies.uid ? (
         <div className="profile">
           <div className="profile_body">
-            <img src={Icons[cookies.icon]} alt="bloggy"></img>
+            <img src={Icons[cookies.icon]} alt="Scrollon"></img>
             <div className="profile_name">{cookies.uname}</div>
           </div>
           <span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -108,7 +102,7 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
           {cookies.ghost ? (
             <div className="profile">
               <div className="profile_body">
-                <img src={Icons["profile"]} alt="bloggy"></img>
+                <img src={Icons["profile"]} alt="Scrollon"></img>
                 <div className="profile_name">Anonymous</div>
               </div>
               <span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -127,7 +121,7 @@ export default function Nav({inputRef, search, setSearch,isTyping, setIsTyping})
                 <div className="nav_sign">Sign In</div>
               </Link>
               <div className="nav_ghost" onClick={ghostMode}>
-                <img src={Icons["profile"]} alt="bloggy"></img>Ghost
+                <img src={Icons["profile"]} alt="Scrollon"></img>Ghost
               </div>
             </>
           )}

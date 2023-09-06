@@ -74,11 +74,18 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
       body: JSON.stringify({"title": title,"body": body, "tag": tag, uid: cookies.uid, "posted_time": currdate, "username": cookies.uname, "icon": cookies.icon, "likes": 0, "likedBy": [], "dislikedBy": [], "viewedBy": [], "saved_by": []})
     };
     fetch(`${link}/create-post`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        handleSubmitModal()
-        navigate("/")
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        handleSubmitModal();
+        navigate("/");
+      }
+    })
+    .catch((error) => {
+      getToastError("An error occurred while fetching data");
+    });
     
   }
 
@@ -117,24 +124,31 @@ export default function Main({search, setSearch, isTyping, setIsTyping}) {
       headers: { "Content-Type": "application/json" }
     };
     fetch(`${link}/get-posts`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        let temp = [...data]
-        if(sort=="latest"){
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        getToastError(data.error);
+      } else {
+        let temp = [...data];
+        if (sort == "latest") {
           temp.sort((a, b) => new Date(b.posted_time) - new Date(a.posted_time));
-        }else if(sort=="liked"){
+        } else if (sort == "liked") {
           temp.sort((a, b) => b.likes - a.likes);
-        }else if(sort=="disliked"){
+        } else if (sort == "disliked") {
           temp.sort((a, b) => a.likes - b.likes);
-        }else if(sort=="top"){
-          temp.sort((a,b) => b.viewedBy.length - a.viewedBy.length)
+        } else if (sort == "top") {
+          temp.sort((a, b) => b.viewedBy.length - a.viewedBy.length);
         }
-        console.log(temp)
-        setLoadingPosts(false)
+        console.log(temp);
+        setLoadingPosts(false);
         setPost(temp);
-        setTempPost(temp)
-        console.log(search)
-      });
+        setTempPost(temp);
+        console.log(search);
+      }
+    })
+    .catch((error) => {
+      getToastError("An error occurred while fetching data");
+    });
 
   }
 

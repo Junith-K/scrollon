@@ -5,6 +5,7 @@ import Post from "../HomePage/Post/Post";
 import link from "../../constants";
 import Viewed from "../HomePage/Viewed/Viewed";
 import Loader from "../Loader/Loader";
+import getToastError from "../Toast/Toast";
 
 function Profile(){
     const [cookies, setCookie] = useCookies(["uid", "uname", "ghost", "sortBy", "recent_posts"]);
@@ -29,21 +30,28 @@ function Profile(){
         fetch(`${link}/profile/${sort}/${cookies.uid}`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
-            let temp = data
-            let targetKey;
-            if(sort=="lastviewed"){
-                targetKey = "viewedBy"
-            }else if(sort=="liked"){
-                targetKey = "likedBy"
-            }else if(sort=="disliked"){
-                targetKey = "dislikedBy"
-            }else if(sort=="saved"){
-                targetKey = "saved_by"
+            if (data.error) {
+            getToastError(data.error);
+            } else {
+                let temp = data
+                let targetKey;
+                if(sort=="lastviewed"){
+                    targetKey = "viewedBy"
+                }else if(sort=="liked"){
+                    targetKey = "likedBy"
+                }else if(sort=="disliked"){
+                    targetKey = "dislikedBy"
+                }else if(sort=="saved"){
+                    targetKey = "saved_by"
+                }
+                temp.sort((a, b) => sortBy(a, b, targetKey))
+                console.log(temp)
+                setPosts(temp)
+                setLoading(false)
             }
-            temp.sort((a, b) => sortBy(a, b, targetKey))
-            console.log(temp)
-            setPosts(temp)
-            setLoading(false)
+        })
+        .catch((error) => {
+            getToastError("An error occurred while fetching data");
         });
     }
 

@@ -1,7 +1,5 @@
 import add from "./add.png"
 import angryface from "./angryface.png";
-import B_64 from "./B_64.png";
-import B_96 from "./B_96.png";
 import creeper from "./creeper.png";
 import doge from "./doge.png";
 import feels_guy from "./feels_guy.png";
@@ -19,6 +17,7 @@ import steve from "./steve.png";
 import super_mario from "./super_mario.png";
 import waluigi from "./waluigi.png";
 import zombie from "./zombie.png";
+import hebbaadh from "./hebbaadh.png"
 
-export const icons = {angryface,creeper,doge,feels_guy,genshin,ghast,luigi,mario_8_bit,mortal_kombat,neww,notbad,profile,saltbae,skeleton,steve,super_mario,waluigi,zombie};
-export default {add,angryface,B_64,B_96,creeper,doge,feels_guy,genshin,ghast,luigi,mario_8_bit,mortal_kombat,neww,notbad,profile,saltbae,skeleton,steve,super_mario,waluigi,zombie}
+export const icons = {angryface,creeper,doge,feels_guy,genshin,ghast,luigi,mario_8_bit,mortal_kombat,notbad,profile,saltbae,skeleton,steve,super_mario,waluigi,zombie};
+export default {add,angryface,creeper,hebbaadh,doge,feels_guy,genshin,ghast,luigi,mario_8_bit,mortal_kombat,neww,notbad,profile,saltbae,skeleton,steve,super_mario,waluigi,zombie}
