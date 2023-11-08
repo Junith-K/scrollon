@@ -18,11 +18,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+<center>
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-
+</center>
 
 
 <!-- PROJECT LOGO -->
@@ -76,7 +77,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://scrollon-6fuj.onrender.com/)
+[![Product Name Screen Shot][home-page-screenshot]](https://scrollon-6fuj.onrender.com/)
 
 Experience social media like never before with Scrollon—a dynamic platform designed for intuitive user engagement and efficient content management.
 
@@ -201,11 +202,11 @@ Resources I've used to complete the project are given below.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Junith-K/scrollon.svg?style=for-the-badge
 [contributors-url]: https://github.com/Junith-K/scrollon/graphs/contributors
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Junith-K/scrollon.svg?style=for-the-badge
 [stars-url]: https://github.com/Junith-K/scrollon/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Junith-K/scrollon.svg?style=for-the-badge
 [issues-url]: https://github.com/Junith-K/scrollon/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/junithkumar/
