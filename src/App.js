@@ -27,7 +27,7 @@ function App() {
   });
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Nav inputRef={inputRef} search={search} setSearch={setSearch} isTyping={isTyping} setIsTyping={setIsTyping}/>
       <ToastContainer />
       {cookies.uid || cookies.ghost ? (
